@@ -1,10 +1,23 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { PiShootingStarLight } from "react-icons/pi";
 
 export default function Home() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const isDisabled = title.trim() === "" || content.trim() === "";
+  const router = useRouter();
+
+  const handleGenerate = () => {
+    if (isDisabled) return;
+  };
   return (
-    <div className=" m-auto flex flex-col gap-10 rounded-md shadow-sm p-10">
+    <div className=" m-auto w-[880px] flex flex-col gap-10 rounded-md shadow-sm p-10">
       <div className="flex  gap-2 flex-col">
         <div className="flex items-center gap-2">
           <PiShootingStarLight />
@@ -24,6 +37,8 @@ export default function Home() {
         <input
           className="w-full p-2 shadow-sm outline-none"
           placeholder="Enter a title for your article..."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         ></input>
       </div>
       <div className="flex gap-2 flex-col">
@@ -33,10 +48,23 @@ export default function Home() {
         <textarea
           className="w-full p-2 shadow-sm outline-none h-40"
           placeholder="Paste your article content here..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         ></textarea>
       </div>
       <div className="w-full flex justify-end">
-        <Button className="w-40 h-10">Generate summary</Button>
+        <Button
+          disabled={isDisabled}
+          onClick={() => {
+            handleGenerate();
+            router.push("/summary");
+          }}
+          className={`w-40 h-10 cursor-pointer ${
+            isDisabled ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          Generate summary
+        </Button>
       </div>
     </div>
   );

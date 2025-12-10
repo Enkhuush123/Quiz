@@ -9,11 +9,10 @@ import {
 
 export function AppSidebar() {
   return (
-    <Sidebar>
-      <div className="h-dvh border p-5">
-        <SidebarTrigger />
+    <Sidebar className="p-4">
+      <div>
+        <p className="font-semibold text-2xl">History</p>
       </div>
-      <p>GG</p>
       <SidebarHeader />
       <SidebarContent>
         <p>gg</p>
