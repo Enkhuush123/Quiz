@@ -5,8 +5,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { PiShootingStarLight } from "react-icons/pi";
+import prisma from "@/lib/prisma";
 
-export default function Home() {
+export default async function Home() {
+  const users = await prisma.user.findMany();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -16,6 +19,7 @@ export default function Home() {
   const handleGenerate = () => {
     if (isDisabled) return;
   };
+
   return (
     <div className=" m-auto w-[880px] flex flex-col gap-10 rounded-md shadow-sm p-10">
       <div className="flex  gap-2 flex-col">
