@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import prisma from "@/lib/prisma";
 import { IoIosClose } from "react-icons/io";
 import { IoBookOutline } from "react-icons/io5";
 import { MdKeyboardArrowLeft } from "react-icons/md";
@@ -19,7 +20,7 @@ export default function Home() {
                 Take a quick test about your knowledge from your content{" "}
               </p>
             </div>
-            <button className="w-12 h-10 shadow-sm flex items-center justify-center">
+            <button className="w-12 h-10 shadow-sm flex items-center justify-center cursor-pointer">
               <IoIosClose />
             </button>
           </div>
