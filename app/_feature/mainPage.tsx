@@ -16,7 +16,7 @@ export const MainPage = () => {
   const handleGenerate = async () => {
     if (isDisabled) return;
 
-    const res = await fetch(`/api/article`, {
+    const res = await fetch(`/api/summary`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

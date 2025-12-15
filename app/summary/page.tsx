@@ -1,13 +1,37 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { IoBookOutline, IoDocumentTextOutline } from "react-icons/io5";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { PiShootingStarLight } from "react-icons/pi";
 
+interface Article {
+  id: string;
+  title: string;
+
+  summary: string;
+}
+
 export default function Home() {
   const router = useRouter();
+
+  const [article, setArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/article")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setArticle(data.articles || null);
+      });
+  }, []);
+
+  console.log(article, "gg");
+
   return (
     <div className=" m-auto w-auto flex flex-col gap-5">
       <button
@@ -29,7 +53,7 @@ export default function Home() {
               <p className="font-normal text-neutral-400">Summarized content</p>
             </div>
             <div>
-              <h1 className="font-semibold text-2xl">Genghis khan</h1>
+              <h1 className="font-semibold text-2xl">{article?.summary}</h1>
             </div>
           </div>
         </div>

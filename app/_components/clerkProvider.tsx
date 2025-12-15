@@ -9,16 +9,10 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 
-import { neobrutalism } from "@clerk/themes";
-
 export default function ClerkProviderWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <ClerkProvider appearance={{ theme: neobrutalism }}>
-      {children}
-    </ClerkProvider>
-  );
+  return <ClerkProvider>{children}</ClerkProvider>;
 }

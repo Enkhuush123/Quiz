@@ -3,8 +3,6 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: "GEMINI_API_KEY" });
-
 export async function POST(req: NextRequest) {
   try {
     const user = await currentUser();
