@@ -32,7 +32,7 @@ export const MainPage = () => {
   };
 
   return (
-    <div className=" m-auto w-[880px] flex flex-col gap-10 rounded-md shadow-sm p-10">
+    <div className=" m-auto w-220 flex flex-col gap-10 rounded-md shadow-sm p-10">
       <div className="flex  gap-2 flex-col">
         <div className="flex items-center gap-2">
           <PiShootingStarLight />
@@ -58,7 +58,7 @@ export const MainPage = () => {
       </div>
       <div className="flex gap-2 flex-col">
         <div className="flex items-center gap-2">
-          <IoDocumentTextOutline /> <p>Article Title</p>
+          <IoDocumentTextOutline /> <p>Article Content</p>
         </div>
         <textarea
           className="w-full p-2 shadow-sm outline-none h-40"

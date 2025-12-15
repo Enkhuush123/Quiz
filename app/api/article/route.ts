@@ -1,7 +1,9 @@
-// app/api/article/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({ apiKey: "GEMINI_API_KEY" });
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,11 +13,15 @@ export async function POST(req: NextRequest) {
 
     const { title, content } = await req.json();
 
-    const dbUser = await prisma.user.findUnique({
+    const email = user.emailAddresses[0]?.emailAddress || "";
+    const dbUser = await prisma.user.upsert({
       where: { clerkId: user.id },
+      update: {},
+      create: {
+        clerkId: user.id,
+        email,
+      },
     });
-    if (!dbUser)
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
 
     const article = await prisma.article.create({
       data: {
@@ -25,6 +31,14 @@ export async function POST(req: NextRequest) {
         summary: "",
       },
     });
+    // const quiz = await prisma.quiz.create({
+    //   data: {
+    //     title,
+    //     content,
+    //     userId: dbUser.id,
+    //     summary: "",
+    //   },
+    // });
 
     return NextResponse.json({ article });
   } catch (err) {

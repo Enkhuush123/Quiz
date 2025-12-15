@@ -15,7 +15,6 @@ export function AppSidebar() {
       </div>
       <SidebarHeader />
       <SidebarContent>
-        <p>gg</p>
         <SidebarGroup />
         <SidebarGroup />
       </SidebarContent>
