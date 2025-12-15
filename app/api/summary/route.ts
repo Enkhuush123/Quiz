@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       model: "gemini-2.5-flash",
       contents: `
           Summarize the following article clearly.
-          Use short paragraphs or bullet points.
+         
           
           Article: ${content}`,
     });
