@@ -39,6 +39,7 @@ model Article {
 model User {
   id String @id @unique @default(cuid())
   email String  @unique
+  clerkId String @unique @default("temp")
   
   name String?
    createdAt DateTime @default(now())

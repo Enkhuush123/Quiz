@@ -13,8 +13,22 @@ export const MainPage = () => {
   const isDisabled = title.trim() === "" || content.trim() === "";
   const router = useRouter();
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (isDisabled) return;
+
+    const res = await fetch(`/api/article`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        content,
+      }),
+    });
+    if (res.ok) {
+      router.push("/summary");
+    }
   };
 
   return (
@@ -58,7 +72,6 @@ export const MainPage = () => {
           disabled={isDisabled}
           onClick={() => {
             handleGenerate();
-            router.push("/summary");
           }}
           className={`w-40 h-10 cursor-pointer ${
             isDisabled ? "opacity-50 cursor-not-allowed" : ""

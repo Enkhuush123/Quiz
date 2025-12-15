@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./_components/sidebar";
 import { Header } from "./_components/header";
+import ClerkProviderWrapper from "./_components/clerkProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,17 +31,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex flex-col w-full h-full">
-          <Header />
+        <ClerkProviderWrapper>
+          <div className="flex flex-col w-full h-full">
+            <Header />
 
-          <div className="flex relative">
-            <SidebarProvider>
-              <AppSidebar />
-              <SidebarTrigger />
-              {children}
-            </SidebarProvider>
+            <div className="flex relative">
+              <SidebarProvider>
+                <AppSidebar />
+                <SidebarTrigger />
+                {children}
+              </SidebarProvider>
+            </div>
           </div>
-        </div>
+        </ClerkProviderWrapper>
       </body>
     </html>
   );

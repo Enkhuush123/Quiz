@@ -1,10 +1,8 @@
 import prisma from "@/lib/prisma";
 import { MainPage } from "./_feature/mainPage";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
-  const users = await prisma.user.findMany();
-  console.log(users);
-
   return (
     <div className="m-auto">
       <MainPage />
