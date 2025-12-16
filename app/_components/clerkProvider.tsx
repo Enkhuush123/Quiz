@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export default function ClerkProviderWrapper({
   children,

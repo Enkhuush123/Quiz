@@ -1,11 +1,9 @@
-import prisma from "@/lib/prisma";
-import { MainPage } from "./_feature/mainPage";
-import { currentUser } from "@clerk/nextjs/server";
+import { ArtcileInput } from "./_components/articleInput";
 
 export default async function Home() {
   return (
     <div className="m-auto">
-      <MainPage />
+      <ArtcileInput />
     </div>
   );
 }

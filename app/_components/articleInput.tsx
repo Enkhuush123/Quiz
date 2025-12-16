@@ -6,9 +6,10 @@ import { useState } from "react";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { PiShootingStarLight } from "react-icons/pi";
 
-export const MainPage = () => {
+export const ArtcileInput = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [summary, setSummary] = useState("");
 
   const isDisabled = title.trim() === "" || content.trim() === "";
   const router = useRouter();
@@ -26,13 +27,11 @@ export const MainPage = () => {
         content,
       }),
     });
-    if (res.ok) {
-      router.push("/summary");
-    }
+    const data = await res.json();
+    setSummary(data.article.summary);
   };
-
   return (
-    <div className=" m-auto w-220 flex flex-col gap-10 rounded-md shadow-sm p-10">
+    <div className=" m-auto flex flex-col gap-10 rounded-md shadow-sm p-10">
       <div className="flex  gap-2 flex-col">
         <div className="flex items-center gap-2">
           <PiShootingStarLight />

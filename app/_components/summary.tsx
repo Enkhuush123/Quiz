@@ -27,7 +27,7 @@ interface Article {
   userId: string;
 }
 
-export default function Home() {
+export const Summary = () => {
   const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,6 @@ export default function Home() {
   }, []);
 
   console.log(article);
-
   return (
     <div className="m-auto w-220  flex flex-col gap-5">
       <button
@@ -98,4 +97,4 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};

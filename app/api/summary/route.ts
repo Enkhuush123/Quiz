@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
       model: "gemini-2.5-flash",
       contents: `
           Summarize the following article clearly.
+          Provide a brief summary of the following article.
          
           
           Article: ${content}`,
