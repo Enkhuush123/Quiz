@@ -19,7 +19,7 @@ export default function SidebarWrapper({
   return (
     <div className="flex h-screen">
       <AppSidebar articles={articles} onSelect={handleSelect} />
-      <main className="flex-1 p-6 overflow-auto">{children}</main>
+      <main className="w-full h-full bg-neutral-100 p-5">{children}</main>
     </div>
   );
 }

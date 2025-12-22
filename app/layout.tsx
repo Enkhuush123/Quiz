@@ -32,14 +32,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClerkProviderWrapper>
-          <div className="w-full h-full">
-            <Header />
-            <div className="flex flex-col w-full h-full">
-              <div className="flex relative w-full h-full">
-                <SidebarWrapper>{children}</SidebarWrapper>
-              </div>
-            </div>
-          </div>
+          <Header />
+
+          <SidebarWrapper>
+            <div className="w-full h-full">{children}</div>
+          </SidebarWrapper>
         </ClerkProviderWrapper>
       </body>
     </html>

@@ -47,8 +47,7 @@ export async function POST(req: NextRequest) {
 
     quizzes = JSON.parse(cleaned);
   } catch (e) {
-    console.error("Gemini raw response:", response.text);
-    throw new Error("Invalid JSON from Gemini");
+    console.error("generate failed", response.text);
   }
 
   await prisma.quiz.createMany({

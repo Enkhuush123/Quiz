@@ -44,21 +44,21 @@ export const Summary = ({ article, onBack }: Props) => {
         router.push(`/quiz/${article.id}`);
       }
     } catch (error) {
-      console.error("Network error:", error);
+      console.error("cant generate quiz", error);
       setLoading(false);
     }
   };
 
   return (
-    <div className="m-auto w-220 flex flex-col gap-5">
+    <div className=" m-auto  w-220 flex flex-col gap-5">
       <button
         onClick={onBack}
-        className="w-12 h-10 shadow-sm flex items-center justify-center"
+        className="w-12 h-10 shadow-sm flex items-center justify-center bg-white"
       >
         <MdKeyboardArrowLeft />
       </button>
 
-      <div className="flex flex-col gap-10 rounded-md shadow-sm p-10">
+      <div className="flex flex-col gap-10 rounded-md shadow-sm p-10 bg-white">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <PiShootingStarLight />

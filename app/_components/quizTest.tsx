@@ -37,7 +37,7 @@ export default function QuizClient({
     }
   };
   return (
-    <div className=" m-auto w-auto flex flex-col gap-5">
+    <div className=" m-auto w-160  flex flex-col gap-5 bg-white">
       <div className="flex flex-col gap-10 rounded-md  p-10">
         <div className="flex  gap-2 flex-col">
           <div className="flex items-center gap-2 justify-between">
@@ -50,7 +50,7 @@ export default function QuizClient({
                 Take a quick test about your knowledge from your content{" "}
               </p>
             </div>
-            <button className="w-12 h-10 shadow-sm flex items-center justify-center cursor-pointer">
+            <button className="w-12 h-10 shadow-sm flex items-center justify-center cursor-pointer hover:bg-black hover:text-white transition-colors ">
               <IoIosClose />
             </button>
           </div>
@@ -62,13 +62,13 @@ export default function QuizClient({
               {index + 1}/{quizzes.length}
             </p>
           </div>
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 justify-center items-center">
             <div className="flex gap-5">
               {current.options.slice(0, 2).map((option, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleAnswer(idx)}
-                  className="w-60.75 h-10 shadow-sm"
+                  className="w-60.75  p-2 shadow-sm hover:bg-black hover:text-white transition-colors cursor-pointer"
                 >
                   <p>{option}</p>
                 </button>
@@ -79,7 +79,7 @@ export default function QuizClient({
                 <button
                   key={idx + 2}
                   onClick={() => handleAnswer(idx + 2)}
-                  className="w-60.75 h-10 shadow-sm"
+                  className="w-60.75  p-2 shadow-sm hover:bg-black hover:text-white transition-colors cursor-pointer"
                 >
                   <p>{option}</p>
                 </button>

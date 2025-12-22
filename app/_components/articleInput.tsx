@@ -6,10 +6,12 @@ import { useState } from "react";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { PiShootingStarLight } from "react-icons/pi";
 import { Summary } from "./summary";
+import { Loader2 } from "lucide-react";
 
 type Step = "input" | "summary";
 
 export const ArtcileInput = () => {
+  const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<Step>("input");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -24,6 +26,7 @@ export const ArtcileInput = () => {
   const router = useRouter();
 
   const handleGenerate = async () => {
+    setLoading(true);
     if (isDisabled) return;
 
     const res = await fetch("/api/article", {
@@ -47,6 +50,7 @@ export const ArtcileInput = () => {
     });
 
     setStep("summary");
+    setLoading(false);
   };
 
   return (
@@ -54,7 +58,7 @@ export const ArtcileInput = () => {
       {step === "summary" && article ? (
         <Summary article={article} onBack={() => setStep("input")} />
       ) : (
-        <div className=" m-auto flex flex-col gap-10 rounded-md shadow-sm p-10">
+        <div className="bg-white m-auto  flex flex-col gap-10 rounded-md shadow-sm p-10">
           <div className="flex  gap-2 flex-col">
             <div className="flex items-center gap-2">
               <PiShootingStarLight />
@@ -100,7 +104,14 @@ export const ArtcileInput = () => {
                 isDisabled ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
-              Generate summary
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                "Generate Summary"
+              )}
             </Button>
           </div>
         </div>
