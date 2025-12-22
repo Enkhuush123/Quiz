@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { IoBookOutline } from "react-icons/io5";
 import { MdKeyboardArrowLeft } from "react-icons/md";
@@ -11,10 +12,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 interface Props {
   article: {
-    id?: string;
+    id: string;
     title: string;
     content: string;
     summary: string;
@@ -23,8 +26,31 @@ interface Props {
 }
 
 export const Summary = ({ article, onBack }: Props) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleGenerateQuiz = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          articleId: article.id,
+        }),
+      });
+
+      if (response.ok) {
+        router.push(`/quiz/${article.id}`);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="m-auto w-[880px] flex flex-col gap-5">
+    <div className="m-auto w-220 flex flex-col gap-5">
       <button
         onClick={onBack}
         className="w-12 h-10 shadow-sm flex items-center justify-center"
@@ -45,7 +71,6 @@ export const Summary = ({ article, onBack }: Props) => {
           </div>
 
           <h1 className="font-semibold text-2xl">{article.title}</h1>
-
           <p className="whitespace-pre-line">{article.summary}</p>
         </div>
 
@@ -59,11 +84,22 @@ export const Summary = ({ article, onBack }: Props) => {
               <DialogHeader>
                 <DialogTitle>{article.title}</DialogTitle>
               </DialogHeader>
-              <p className="whitespace-pre-line">{article.content}</p>
+              <p className="whitespace-pre-line max-h-100 overflow-y-auto">
+                {article.content}
+              </p>
             </DialogContent>
           </Dialog>
 
-          <Button onClick={() => alert("Quiz step next ")}>Take a quiz</Button>
+          <Button onClick={handleGenerateQuiz} disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              "Take a quiz"
+            )}
+          </Button>
         </div>
       </div>
     </div>

@@ -14,6 +14,7 @@ export const ArtcileInput = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [article, setArticle] = useState<{
+    id: string;
     title: string;
     summary: string;
     content: string;
@@ -25,23 +26,29 @@ export const ArtcileInput = () => {
   const handleGenerate = async () => {
     if (isDisabled) return;
 
-    const res = await fetch(`/api/summary`, {
+    const res = await fetch("/api/article", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        content,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, content }),
     });
-    const data = await res.json();
-    console.log(data);
 
-    setArticle({ title, content, summary: data.article.summary });
+    if (!res.ok) {
+      console.error("Summary API error:", await res.text());
+      return;
+    }
+
+    const data = await res.json();
+
+    setArticle({
+      id: data.article.id,
+      title,
+      content,
+      summary: data.article.summary,
+    });
 
     setStep("summary");
   };
+
   return (
     <div>
       {step === "summary" && article ? (

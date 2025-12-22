@@ -1,74 +1,37 @@
-import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { GoogleGenAI } from "@google/genai";
-const client = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY || "",
-});
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
-  try {
-    const user = await currentUser();
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+const client = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
-    const { title, content } = await request.json();
+export async function POST(req: NextRequest) {
+  const user = await currentUser();
+  if (!user)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const dbUser = await prisma.user.upsert({
-      where: { clerkId: user.id },
-      update: {},
-      create: {
-        clerkId: user.id,
-        email: user.emailAddresses[0]?.emailAddress || "",
-        name: user.firstName || "no name",
-      },
-    });
+  const { title, content } = await req.json();
 
-    const response = await client.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: `
-   Please provide a concise summary of the following article: ${content}`,
-    });
-    const summary = response.text?.trim() || "";
+  const dbUser = await prisma.user.upsert({
+    where: { clerkId: user.id },
+    update: {},
+    create: {
+      clerkId: user.id,
+      email: user.emailAddresses[0]?.emailAddress || "",
+      name: user.firstName || "no name",
+    },
+  });
 
-    const article = await prisma.article.create({
-      data: { title, content, summary, userId: dbUser.id },
-    });
+  const response = await client.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: `Please provide a concise summary of this article: ${content}`,
+  });
 
-    return NextResponse.json({ article });
-  } catch (err) {
-    console.log(err);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
-export async function GET(request: NextRequest) {
-  try {
-    const user = await currentUser();
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    const dbUser = await prisma.user.findUnique({
-      where: { clerkId: user.id },
-    });
-    if (!dbUser) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-    const articles = await prisma.article.findFirst({
-      where: { userId: dbUser.id },
-      orderBy: { createdAt: "desc" },
-      select: { id: true, title: true, content: true, summary: true },
-    });
+  const summary = response.text?.trim() || "";
 
-    return NextResponse.json({ articles });
-  } catch (err) {
-    console.log(err);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
+  const article = await prisma.article.create({
+    data: { title, content, summary, userId: dbUser.id },
+  });
+
+  return NextResponse.json({ article });
 }
