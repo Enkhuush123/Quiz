@@ -2,9 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
-import { IoBookOutline } from "react-icons/io5";
+import {
+  IoBookOutline,
+  IoCheckmarkCircleOutline,
+  IoCloseCircleOutline,
+} from "react-icons/io5";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { PiShootingStarLight } from "react-icons/pi";
 
@@ -24,18 +30,114 @@ export default function QuizClient({
 }) {
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [finished, setFinished] = useState(false);
 
   const current = quizzes[index];
+  const router = useRouter();
 
   const handleAnswer = async (optionIndex: number) => {
+    setAnswers((prev: number[] | null) => [...(prev || []), optionIndex]);
     if (optionIndex.toString() === current.answer) {
       setScore((s) => s + 1);
     }
 
     if (index + 1 < quizzes.length) {
       setIndex((i) => i + 1);
-    }
+    } else setFinished(true);
   };
+  if (finished) {
+    return (
+      <div className="m-auto w-150 ">
+        <div className="flex items-center gap-3">
+          <PiShootingStarLight />
+          <h2 className="text-2xl font-semibold mb-2"> Quiz completed</h2>
+        </div>
+        <p className="text-gray-500 mb-6">Let’s see what you did</p>
+        <div className="bg-white p-8 flex flex-col gap-5">
+          <div className="">
+            <p className="text-xl font-semibold">
+              Your score: {score} / {quizzes.length}
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {quizzes.map((q, i) => {
+              const userAnswer = answers[i];
+              const correctIndex = Number(q.answer);
+              const isCorrect = userAnswer === correctIndex;
+
+              return (
+                <div key={q.id} className="border-b pb-3 flex flex-col">
+                  <div className="flex items-center gap-5">
+                    <div>
+                      {" "}
+                      {isCorrect ? (
+                        <IoCheckmarkCircleOutline className="text-green-500 text-3xl" />
+                      ) : (
+                        <IoCloseCircleOutline className="text-red-500 text-3xl" />
+                      )}
+                    </div>
+                    <div className="flex  flex-col gap-3">
+                      <p className="font-medium text-sm text-neutral-400">
+                        {i + 1}. {q.question}
+                      </p>
+                      <p className="text-sm">
+                        Your answer:{" "}
+                        <span
+                          className={
+                            isCorrect ? "text-green-600" : "text-black"
+                          }
+                        >
+                          {q.options[userAnswer]}
+                        </span>
+                      </p>
+                      {!isCorrect && (
+                        <p className="text-sm text-green-600">
+                          Correct: {q.options[correctIndex]}
+                        </p>
+                      )}{" "}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="flex justify-between mt-6">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIndex(0);
+                setScore(0);
+                setAnswers([]);
+                setFinished(false);
+              }}
+            >
+              Restart quiz
+            </Button>
+
+            <Button
+              onClick={async () => {
+                await fetch("/api/score", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    quizId: quizzes[0].id,
+                    score,
+                  }),
+                });
+                router.push("/");
+              }}
+            >
+              Save and leave
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className=" m-auto w-160  flex flex-col gap-5 bg-white">
       <div className="flex flex-col gap-10 rounded-md  p-10">
