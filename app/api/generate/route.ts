@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
     where: { id: articleId },
   });
 
+  console.log(article, "art");
+
   if (!article)
     return NextResponse.json({ error: "Article not found" }, { status: 404 });
 

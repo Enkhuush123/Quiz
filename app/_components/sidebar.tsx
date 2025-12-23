@@ -48,7 +48,11 @@ export default function AppSidebar({
         </div>
         <div>
           <button className="p-1" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <GoSidebarExpand /> : <GoSidebarCollapse />}
+            {isOpen ? (
+              <GoSidebarExpand className="text-xl" />
+            ) : (
+              <GoSidebarCollapse className="text-xl" />
+            )}
           </button>
         </div>
       </div>

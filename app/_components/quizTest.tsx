@@ -46,6 +46,7 @@ export default function QuizClient({
       setIndex((i) => i + 1);
     } else setFinished(true);
   };
+  console.log(quizzes, "quizs");
   if (finished) {
     return (
       <div className="m-auto w-150 ">
