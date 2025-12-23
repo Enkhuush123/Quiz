@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import AppSidebar from "./sidebar";
 
 export default function SidebarWrapper({
@@ -7,13 +8,17 @@ export default function SidebarWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const [articles, setArticles] = useState([
-    { id: "1", title: "Article 1" },
-    { id: "2", title: "Article 2" },
-  ]);
+  const [articles, setArticles] = useState<{ id: string; title: string }[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    fetch("/api/articles")
+      .then((res) => res.json())
+      .then(setArticles);
+  }, []);
 
   const handleSelect = (id: string) => {
-    console.log("Selected article:", id);
+    router.push(`/article/${id}`);
   };
 
   return (

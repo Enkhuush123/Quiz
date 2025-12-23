@@ -3,19 +3,17 @@ import { useEffect, useState } from "react";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { PiShootingStarLight } from "react-icons/pi";
 import { GoSidebarExpand, GoSidebarCollapse } from "react-icons/go";
+import { useRouter } from "next/navigation";
 
-interface SidebarProps {
-  articles: { id: string; title: string }[];
-  onSelect: (id: string) => void;
-}
+type articles = {
+  id: string;
+  title: string;
+};
 
-export default function AppSidebar({
-  onSelect,
-}: {
-  onSelect: (id: string) => void;
-}) {
+export default function AppSidebar() {
   const [articles, setArticles] = useState<{ id: string; title: string }[]>([]);
   const [isOpen, setIsOpen] = useState(true);
+  const router = useRouter();
   useEffect(() => {
     fetch(`/api/articles`)
       .then((res) => res.json())
@@ -24,7 +22,7 @@ export default function AppSidebar({
   return (
     <div
       className={`${
-        isOpen ? "w-63" : "w-16"
+        isOpen ? "w-64" : "w-16"
       } h-screen border-r  transition-all duration-300 flex flex-col`}
     >
       <div className="flex  justify-between p-4 ">
@@ -36,7 +34,7 @@ export default function AppSidebar({
                 {articles.map((a) => (
                   <button
                     key={a.id}
-                    onClick={() => onSelect(a.id)}
+                    onClick={() => router.push(`/article/${a.id}`)}
                     className="w-auto h-11 "
                   >
                     {a.title}

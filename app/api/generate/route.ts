@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
 
   const article = await prisma.article.findUnique({
     where: { id: articleId },
+    include: { quizzes: true },
   });
 
   console.log(article, "art");
@@ -23,7 +24,11 @@ export async function POST(req: NextRequest) {
   if (!article)
     return NextResponse.json({ error: "Article not found" }, { status: 404 });
 
-  const prompt = `Generate 5 multiple choice questions based on this article: ${article.content}. Return the response in this exact JSON format:
+  if (article.quizzes.length > 0) {
+    return NextResponse.json({ success: false, message: "Quiz already exist" });
+  }
+
+  const prompt = `Generate exactly 5 multiple choice questions based on this article: ${article.content}. Return the response in this exact JSON format:
       [
         {
           "question": "Question text here",
@@ -48,6 +53,7 @@ export async function POST(req: NextRequest) {
         .trim() || "[]";
 
     quizzes = JSON.parse(cleaned);
+    if (quizzes.length > 5) quizzes = quizzes.slice(0, 5);
   } catch (e) {
     console.error("generate failed", response.text);
   }
@@ -61,5 +67,5 @@ export async function POST(req: NextRequest) {
     })),
   });
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, generated: quizzes.length });
 }
