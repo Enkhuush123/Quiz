@@ -7,7 +7,6 @@ export default function ArticlePage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // unwrap the promise
   const resolvedParams = use(params);
 
   const article = use(

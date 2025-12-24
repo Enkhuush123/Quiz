@@ -14,6 +14,17 @@ import {
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { PiShootingStarLight } from "react-icons/pi";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 interface Quiz {
   id: string;
   question: string;
@@ -36,6 +47,10 @@ export default function QuizClient({
   const current = quizzes[index];
   const router = useRouter();
 
+  const cancelQuiz = () => {
+    router.push("/");
+  };
+
   const handleAnswer = async (optionIndex: number) => {
     setAnswers((prev: number[] | null) => [...(prev || []), optionIndex]);
     if (optionIndex.toString() === current.answer) {
@@ -49,7 +64,7 @@ export default function QuizClient({
   console.log(quizzes, "quizs");
   if (finished) {
     return (
-      <div className="m-auto w-150 ">
+      <div className="m-auto w-150  ">
         <div className="flex items-center gap-3">
           <PiShootingStarLight />
           <h2 className="text-2xl font-semibold mb-2"> Quiz completed</h2>
@@ -62,14 +77,14 @@ export default function QuizClient({
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="overflow-auto h-130">
             {quizzes.map((q, i) => {
               const userAnswer = answers[i];
               const correctIndex = Number(q.answer);
               const isCorrect = userAnswer === correctIndex;
 
               return (
-                <div key={q.id} className="border-b pb-3 flex flex-col">
+                <div key={q.id} className=" pb-3 flex flex-col">
                   <div className="flex items-center gap-5">
                     <div>
                       {" "}
@@ -105,7 +120,7 @@ export default function QuizClient({
             })}
           </div>
 
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between ">
             <Button
               variant="outline"
               onClick={() => {
@@ -153,9 +168,39 @@ export default function QuizClient({
                 Take a quick test about your knowledge from your content{" "}
               </p>
             </div>
-            <button className="w-12 h-10 shadow-sm flex items-center justify-center cursor-pointer hover:bg-black hover:text-white transition-colors ">
-              <IoIosClose />
-            </button>
+
+            <Dialog>
+              <form>
+                <DialogTrigger asChild>
+                  <Button variant="outline">
+                    <IoIosClose />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-106.25">
+                  <DialogHeader>
+                    <DialogTitle>Are you sure?</DialogTitle>
+                    <p className="font-normal text-sm text-red-500">
+                      If you press 'Cancel', this quiz will restart from the
+                      beginning.
+                    </p>
+                  </DialogHeader>
+
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button className="w-44.75">Go Back</Button>
+                    </DialogClose>
+                    <Button
+                      className="w-44.75"
+                      type="submit"
+                      variant="outline"
+                      onClick={cancelQuiz}
+                    >
+                      Cancel Quiz
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </form>
+            </Dialog>
           </div>
         </div>
         <div className="p-5 shadow-sm flex flex-col gap-5">

@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "./_components/header";
 import ClerkProviderWrapper from "./_components/clerkProvider";
 import SidebarWrapper from "./_components/SidebarWrapper";
+import { CreateUser } from "./_components/createUser";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,8 @@ export default function RootLayout({
           <Header />
 
           <SidebarWrapper>
-            <div className="w-full h-full">{children}</div>
+            <CreateUser />
+            {children}
           </SidebarWrapper>
         </ClerkProviderWrapper>
       </body>
