@@ -1,24 +1,22 @@
 "use client";
-import { useEffect, useState } from "react";
-import { IoDocumentTextOutline } from "react-icons/io5";
-import { PiShootingStarLight } from "react-icons/pi";
-import { GoSidebarExpand, GoSidebarCollapse } from "react-icons/go";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-type articles = {
+import { GoSidebarExpand, GoSidebarCollapse } from "react-icons/go";
+
+type Article = {
   id: string;
   title: string;
 };
 
-export default function AppSidebar() {
-  const [articles, setArticles] = useState<{ id: string; title: string }[]>([]);
+export default function AppSidebar({
+  articles,
+  onSelect,
+}: {
+  articles: Article[];
+  onSelect: (id: string) => void;
+}) {
   const [isOpen, setIsOpen] = useState(true);
-  const router = useRouter();
-  useEffect(() => {
-    fetch(`/api/articles`)
-      .then((res) => res.json())
-      .then(setArticles);
-  }, []);
+
   return (
     <div
       className={`${
@@ -28,16 +26,16 @@ export default function AppSidebar() {
       <div className="flex  justify-between p-4 ">
         <div className="flex items-center gap-5">
           {isOpen && (
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 ">
               <span className="font-bold text-lg">History</span>
               <div className="flex flex-col items-start">
                 {articles.map((a) => (
                   <button
                     key={a.id}
-                    onClick={() => router.push(`/article/${a.id}`)}
-                    className="w-auto h-11 "
+                    onClick={() => onSelect(a.id)}
+                    className="w-auto  cursor-pointer hover:bg-black hover:text-white p-2 rounded-lg "
                   >
-                    {a.title}
+                    <p className="text-sm">{a.title}</p>
                   </button>
                 ))}
               </div>

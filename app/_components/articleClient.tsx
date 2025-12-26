@@ -3,16 +3,12 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -25,7 +21,7 @@ type Article = {
   summary: string;
   title: string;
   content: string;
-  quizzes: any[];
+  quizzes: [];
 };
 
 export default function ArticleClient({ article }: { article: Article }) {
@@ -74,16 +70,18 @@ export default function ArticleClient({ article }: { article: Article }) {
           </div>
           <div className="flex w-full justify-end">
             <Dialog>
-              <form>
-                <DialogTrigger asChild>
-                  <Button variant="outline">See Content</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <p className="whitespace-pre-line max-h-100 overflow-y-auto">
-                    {article.content}
-                  </p>
-                </DialogContent>
-              </form>
+              <DialogTrigger asChild>
+                <Button variant="outline">See content</Button>
+              </DialogTrigger>
+
+              <DialogContent aria-describedby={undefined}>
+                <DialogHeader>
+                  <DialogTitle>{article.title}</DialogTitle>
+                </DialogHeader>
+                <p className="whitespace-pre-line max-h-100 overflow-y-auto">
+                  {article.content}
+                </p>
+              </DialogContent>
             </Dialog>
           </div>
         </div>

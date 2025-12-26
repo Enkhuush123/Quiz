@@ -1,24 +1,22 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import prisma from "@/lib/prisma";
+
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import {
-  IoBookOutline,
   IoCheckmarkCircleOutline,
   IoCloseCircleOutline,
 } from "react-icons/io5";
-import { MdKeyboardArrowLeft } from "react-icons/md";
+
 import { PiShootingStarLight } from "react-icons/pi";
 
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -34,7 +32,6 @@ interface Quiz {
 
 export default function QuizClient({
   quizzes,
-  articleId,
 }: {
   quizzes: Quiz[];
   articleId: string;
@@ -62,6 +59,7 @@ export default function QuizClient({
     } else setFinished(true);
   };
   console.log(quizzes, "quizs");
+
   if (finished) {
     return (
       <div className="m-auto w-150  ">
@@ -180,7 +178,7 @@ export default function QuizClient({
                   <DialogHeader>
                     <DialogTitle>Are you sure?</DialogTitle>
                     <p className="font-normal text-sm text-red-500">
-                      If you press 'Cancel', this quiz will restart from the
+                      If you press Cancel, this quiz will restart from the
                       beginning.
                     </p>
                   </DialogHeader>

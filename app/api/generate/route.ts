@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { GoogleGenAI } from "@google/genai";
+
 import { NextRequest, NextResponse } from "next/server";
 
 const client = new GoogleGenAI({
@@ -43,7 +44,7 @@ export async function POST(req: NextRequest) {
     contents: prompt,
   });
 
-  let quizzes: any[] = [];
+  let quizzes: [] = [];
 
   try {
     const cleaned =
@@ -53,9 +54,8 @@ export async function POST(req: NextRequest) {
         .trim() || "[]";
 
     quizzes = JSON.parse(cleaned);
-    if (quizzes.length > 5) quizzes = quizzes.slice(0, 5);
-  } catch (e) {
-    console.error("generate failed", response.text);
+  } catch (err) {
+    console.error("generate failed", err);
   }
 
   await prisma.quiz.createMany({

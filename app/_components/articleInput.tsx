@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { PiShootingStarLight } from "react-icons/pi";
@@ -23,7 +23,6 @@ export const ArtcileInput = () => {
   } | null>(null);
 
   const isDisabled = title.trim() === "" || content.trim() === "";
-  const router = useRouter();
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -34,11 +33,6 @@ export const ArtcileInput = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, content }),
     });
-
-    if (!res.ok) {
-      console.error("Summary API error:", await res.text());
-      return;
-    }
 
     const data = await res.json();
 
@@ -96,7 +90,7 @@ export const ArtcileInput = () => {
           </div>
           <div className="w-full flex justify-end">
             <Button
-              disabled={isDisabled}
+              disabled={loading}
               onClick={() => {
                 handleGenerate();
               }}
