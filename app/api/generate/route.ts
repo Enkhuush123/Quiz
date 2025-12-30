@@ -8,6 +8,12 @@ const client = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY || "",
 });
 
+type GenerateQuiz = {
+  question: string;
+  answer: number | string;
+  options: string[];
+};
+
 export async function POST(req: NextRequest) {
   const user = await currentUser();
   if (!user)
@@ -44,7 +50,7 @@ export async function POST(req: NextRequest) {
     contents: prompt,
   });
 
-  let quizzes: [] = [];
+  let quizzes: GenerateQuiz[] = [];
 
   try {
     const cleaned =
@@ -59,7 +65,7 @@ export async function POST(req: NextRequest) {
   }
 
   await prisma.quiz.createMany({
-    data: quizzes.map((q: any) => ({
+    data: quizzes.map((q: GenerateQuiz) => ({
       question: q.question,
       options: q.options,
       answer: String(q.answer),

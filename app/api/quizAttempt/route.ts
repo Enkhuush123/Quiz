@@ -10,18 +10,14 @@ export async function POST(req: Request) {
     where: { clerkId: user.id },
   });
   if (!dbUser) {
-    return Response.json({ error: "User not found" }, { status: 404 });
+    return Response.json({ error: "user not found" }, { status: 404 });
   }
-
-  const { quizId, score } = await req.json();
-
-  await prisma.userScore.create({
+  const { quizId } = await req.json();
+  const attempt = await prisma.quizAttempt.create({
     data: {
       userId: dbUser.id,
       quizId,
-      TotalScore: score,
     },
   });
-
-  return Response.json({ success: true });
+  return Response.json({ attemptId: attempt.id });
 }

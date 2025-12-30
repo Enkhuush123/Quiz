@@ -15,13 +15,19 @@ import { useState } from "react";
 import { IoBookOutline, IoDocumentTextOutline } from "react-icons/io5";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { PiShootingStarLight } from "react-icons/pi";
+type Quiz = {
+  id: string;
+  question: string;
+  options: string[];
+  answer: string;
+};
 
 type Article = {
   id: string;
   summary: string;
   title: string;
   content: string;
-  quizzes: [];
+  quizzes: Quiz[];
 };
 
 export default function ArticleClient({ article }: { article: Article }) {

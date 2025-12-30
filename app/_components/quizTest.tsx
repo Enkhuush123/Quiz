@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import {
   IoCheckmarkCircleOutline,
@@ -59,6 +59,16 @@ export default function QuizClient({
     } else setFinished(true);
   };
   console.log(quizzes, "quizs");
+
+  useEffect(() => {
+    if (quizzes.length > 0) {
+      fetch("/api/quizAttempt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quizId: quizzes[0].id }),
+      });
+    }
+  }, [quizzes]);
 
   if (finished) {
     return (
