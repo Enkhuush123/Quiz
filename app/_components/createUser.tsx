@@ -23,4 +23,6 @@ export const CreateUser = () => {
   useEffect(() => {
     if (user) createUser();
   }, [user]);
+
+  return null;
 };
