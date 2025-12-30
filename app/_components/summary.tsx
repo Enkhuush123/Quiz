@@ -50,7 +50,7 @@ export const Summary = ({ article, onBack }: Props) => {
   };
 
   return (
-    <div className=" m-auto  w-220 flex flex-col gap-5">
+    <div className=" m-auto  w-220 flex flex-col gap-5 max-sm:w-full max-sm:h-full h-full">
       <button
         onClick={onBack}
         className="w-12 h-10 shadow-sm flex items-center justify-center bg-white"

@@ -22,9 +22,11 @@ export default function SidebarWrapper({
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen max-sm:h-full ">
       <AppSidebar articles={articles} onSelect={handleSelect} />
-      <main className="w-full h-full bg-neutral-100 p-5">{children}</main>
+      <main className="w-full h-full bg-neutral-100 p-5 max-sm:w-full max-sm:h-full">
+        {children}
+      </main>
     </div>
   );
 }

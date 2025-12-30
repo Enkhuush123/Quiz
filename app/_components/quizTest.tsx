@@ -22,6 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Loader2 } from "lucide-react";
 
 interface Quiz {
   id: string;
@@ -40,6 +41,7 @@ export default function QuizClient({
   const [score, setScore] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [finished, setFinished] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const current = quizzes[index];
   const router = useRouter();
@@ -72,7 +74,7 @@ export default function QuizClient({
 
   if (finished) {
     return (
-      <div className="m-auto w-150  ">
+      <div className="m-auto w-150 max-sm:w-full  ">
         <div className="flex items-center gap-3">
           <PiShootingStarLight />
           <h2 className="text-2xl font-semibold mb-2"> Quiz completed</h2>
@@ -130,6 +132,7 @@ export default function QuizClient({
 
           <div className="flex justify-between ">
             <Button
+              className="cursor-pointer"
               variant="outline"
               onClick={() => {
                 setIndex(0);
@@ -142,7 +145,10 @@ export default function QuizClient({
             </Button>
 
             <Button
+              disabled={loading}
+              className="cursor-pointer"
               onClick={async () => {
+                setLoading(true);
                 await fetch("/api/score", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
@@ -151,10 +157,18 @@ export default function QuizClient({
                     score,
                   }),
                 });
+                setLoading(false);
                 router.push("/");
               }}
             >
-              Save and leave
+              {loading ? (
+                <div className="flex items-center gap-3">
+                  <p>Saving...</p>
+                  <Loader2 className="animate-spin" />
+                </div>
+              ) : (
+                <p>Save and leave</p>
+              )}
             </Button>
           </div>
         </div>
@@ -163,7 +177,7 @@ export default function QuizClient({
   }
 
   return (
-    <div className=" m-auto w-160  flex flex-col gap-5 bg-white">
+    <div className=" m-auto w-160  flex flex-col gap-5 bg-white max-sm:w-full ">
       <div className="flex flex-col gap-10 rounded-md  p-10">
         <div className="flex  gap-2 flex-col">
           <div className="flex items-center gap-2 justify-between">
@@ -218,13 +232,13 @@ export default function QuizClient({
               {index + 1}/{quizzes.length}
             </p>
           </div>
-          <div className="flex flex-col gap-5 justify-center items-center">
+          <div className="flex flex-col gap-5 justify-center items-center max-sm:w-full">
             <div className="flex gap-5">
               {current.options.slice(0, 2).map((option, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleAnswer(idx)}
-                  className="w-60.75  p-2 shadow-sm hover:bg-black hover:text-white transition-colors cursor-pointer"
+                  className="w-60.75 max-sm:w-full  p-2 shadow-sm hover:bg-black hover:text-white transition-colors cursor-pointer"
                 >
                   <p>{option}</p>
                 </button>
@@ -235,7 +249,7 @@ export default function QuizClient({
                 <button
                   key={idx + 2}
                   onClick={() => handleAnswer(idx + 2)}
-                  className="w-60.75  p-2 shadow-sm hover:bg-black hover:text-white transition-colors cursor-pointer"
+                  className="w-60.75 max-sm:w-full  p-2 shadow-sm hover:bg-black hover:text-white transition-colors cursor-pointer"
                 >
                   <p>{option}</p>
                 </button>

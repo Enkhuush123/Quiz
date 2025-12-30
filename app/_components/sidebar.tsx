@@ -20,22 +20,22 @@ export default function AppSidebar({
   return (
     <div
       className={`${
-        isOpen ? "w-64" : "w-16"
+        isOpen ? "w-64 max-sm:w-full " : "w-16"
       } h-screen border-r  transition-all duration-300 flex flex-col`}
     >
       <div className="flex  justify-between p-4 ">
         <div className="flex items-center gap-5">
           {isOpen && (
-            <div className="flex flex-col gap-3 ">
-              <span className="font-bold text-lg">History</span>
-              <div className="flex flex-col items-start">
+            <div className="flex flex-col gap-3">
+              <p className="font-bold text-lg">History</p>
+              <div className="flex flex-col items-start gap-3 ">
                 {articles.map((a) => (
                   <button
                     key={a.id}
                     onClick={() => onSelect(a.id)}
-                    className="w-auto  cursor-pointer hover:bg-black hover:text-white p-2 rounded-lg "
+                    className="w-50  cursor-pointer hover:bg-black hover:text-white p-2 rounded-lg max-sm:w-full  "
                   >
-                    <p className="text-sm">{a.title}</p>
+                    <p className="text-sm items-start flex">{a.title}</p>
                   </button>
                 ))}
               </div>

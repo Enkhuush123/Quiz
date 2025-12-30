@@ -67,7 +67,7 @@ export default function ArticleClient({ article }: { article: Article }) {
           <h1 className="font-semibold text-2xl">{article.title}</h1>
           <p className="whitespace-pre-line">{article.summary}</p>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <IoDocumentTextOutline /> <p>Article Content</p>
           </div>
@@ -98,7 +98,7 @@ export default function ArticleClient({ article }: { article: Article }) {
               onClick={() => router.push(`/quiz/${article.id}`)}
               disabled={loading}
             >
-              Take quiz
+              Take a quiz
             </Button>
           ) : (
             <Button onClick={handleGenerateQuiz} disabled={loading}>
