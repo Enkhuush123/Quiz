@@ -1,20 +1,19 @@
 import ArticleClient from "@/app/_components/articleClient";
 import prisma from "@/lib/prisma";
-import { use } from "react";
 
-export default function ArticlePage({
+export default async function ArticlePage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const resolvedParams = use(params);
-
-  const article = use(
-    prisma.article.findUnique({
-      where: { id: resolvedParams.id },
-      include: { quizzes: true },
-    })
-  );
+  if (!params) {
+    return <div>Invalid Id</div>;
+  }
+  const { id } = await params;
+  const article = await prisma.article.findUnique({
+    where: { id: id },
+    include: { quizzes: true },
+  });
 
   if (!article) return <div>Article not found</div>;
 
